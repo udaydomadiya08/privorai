@@ -1,0 +1,43 @@
+services:
+  firewall-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: privorai-firewall-app
+    restart: unless-stopped
+    env_file:
+      - .env
+    expose:
+      - "8000"
+    volumes:
+      - audit_data:/app/.audit
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    networks:
+      - firewall-net
+
+  reverse-proxy:
+    image: nginx:1.27-alpine
+    container_name: privorai-firewall-proxy
+    restart: unless-stopped
+    depends_on:
+      firewall-app:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    volumes:
+      - ./deploy/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./deploy/nginx/conf.d:/etc/nginx/conf.d:ro
+    networks:
+      - firewall-net
+
+volumes:
+  audit_data:
+
+networks:
+  firewall-net:
+    driver: bridge

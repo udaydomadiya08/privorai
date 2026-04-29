@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Local Privacy Firewall for LLMs</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero">
+        <p class="eyebrow">Privacy-first hybrid intelligence</p>
+        <h1>Local Privacy Firewall for LLMs</h1>
+        <p class="subtitle">
+          Every request is inspected, rewritten, and sanitized locally before any cloud model sees it.
+        </p>
+      </section>
+
+      <section class="controls">
+        <label>
+          API key
+          <input id="api-key" type="password" placeholder="Optional user/admin API key" />
+        </label>
+        <label>
+          Privacy mode
+          <select id="mode">
+            <option value="hybrid">Hybrid</option>
+            <option value="strict">Strict Privacy</option>
+            <option value="fully_local">Fully Local</option>
+          </select>
+        </label>
+        <label class="check">
+          <input id="web-search" type="checkbox" />
+          Sanitize and use web search
+        </label>
+        <button id="clear-session" type="button">Clear Session</button>
+      </section>
+
+      <section class="ingest">
+        <label>
+          Local file path
+          <input id="path-input" type="text" placeholder="/absolute/path/to/file.pdf" />
+        </label>
+        <label>
+          Local folder path
+          <input id="directory-input" type="text" placeholder="/absolute/path/to/folder" />
+        </label>
+        <label>
+          Or upload a file
+          <input id="file-input" type="file" />
+        </label>
+        <label class="check cardish">
+          <input id="recursive-input" type="checkbox" checked />
+          Scan folders recursively
+        </label>
+      </section>
+
+      <section class="layout">
+        <div class="chat-card">
+          <div id="messages" class="messages"></div>
+          <form id="chat-form" class="composer">
+            <textarea
+              id="message"
+              rows="4"
+              placeholder="Ask with natural detail. Raw input stays local and is sanitized before any outbound call."
+            ></textarea>
+            <button type="submit">Send Securely</button>
+          </form>
+        </div>
+
+        <aside class="panel-stack">
+          <article class="panel">
+            <h2>Original Input</h2>
+            <p class="small">Visible locally only</p>
+            <pre id="original-panel">No message yet.</pre>
+          </article>
+
+          <article class="panel">
+            <h2>Sanitized Outbound Prompt</h2>
+            <p class="small">This is the only content eligible for cloud delivery</p>
+            <pre id="sanitized-panel">No sanitized prompt yet.</pre>
+          </article>
+
+          <article class="panel">
+            <h2>Transparency</h2>
+            <ul id="transparency-list" class="transformations"></ul>
+          </article>
+
+          <article class="panel">
+            <h2>Residual Risk</h2>
+            <pre id="risk-panel">No residual-risk assessment yet.</pre>
+          </article>
+
+          <article class="panel">
+            <h2>Artifacts</h2>
+            <ul id="artifact-list" class="transformations"></ul>
+          </article>
+
+          <article class="panel">
+            <h2>Background Jobs</h2>
+            <pre id="job-panel">No background jobs yet.</pre>
+          </article>
+
+          <article class="panel">
+            <h2>Admin Console</h2>
+            <div class="admin-actions">
+              <button id="refresh-jobs" type="button">Refresh Jobs</button>
+              <button id="refresh-audits" type="button">Refresh Audits</button>
+            </div>
+            <p class="small">Requires an admin-scoped API key</p>
+            <ul id="admin-job-list" class="transformations"></ul>
+            <ul id="audit-list" class="transformations"></ul>
+            <pre id="admin-detail">No admin item selected.</pre>
+          </article>
+        </aside>
+      </section>
+    </main>
+
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>
